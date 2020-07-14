@@ -31,6 +31,9 @@ order to have a consistent height
 -use the Material Design makeStyles helper
 -Helper text for when no images are saved
 -Make sure everything that could be componentized is
+-preview image on saved images list
+-placeholder image while images load so the page doesn't jump
+-write some tests
 */
 
 
