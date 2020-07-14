@@ -24,12 +24,13 @@ import categories from './categories';
 Ways to improve the app going forward
 -localstorage is temporary, would need a back-end
 -remove saved photos
--clear all photos
+-clear all saved photos
 -generic handleChange method for any text input
 -handle error when calling pixabay
 -unify css strategy
--Maybe set images as center cropped background images in
-order to have a consistent size
+-Set images as center cropped background images in
+order to have a consistent height
+-Move components to a components folder
 */
 
 
@@ -40,13 +41,12 @@ export default function SearchImages() {
   const [category, setCategory] = React.useState();
   const [images, setImages] = React.useState();
   const [isLoading, setIsLoading] = React.useState(false);
-  
   const [savedPhotos, setSavedPhotos] = React.useState(
-    localStorage.getItem('savedPhotos') || '[]'
+    JSON.parse(localStorage.getItem('savedPhotos') || '[]')
   );
  
   React.useEffect(() => {
-    localStorage.setItem('savedPhotos', savedPhotos);
+    localStorage.setItem('savedPhotos', JSON.stringify(savedPhotos));
   }, [savedPhotos]);
 
   async function getImages() {
@@ -87,13 +87,8 @@ export default function SearchImages() {
     setSearchTerm(value);
   }
   
-  // Saving photos would normally be handled by the back-end
-  // We would want to be able to clear photos or remove them
   const handleSavePhoto = (photo) => () => {
-    let photos = JSON.parse(savedPhotos);
-    photos.push(photo);
-    photos = JSON.stringify(photos);
-    setSavedPhotos(photos);
+    setSavedPhotos(savedPhotos.concat(photo));
   }
   
   return (
@@ -143,7 +138,7 @@ export default function SearchImages() {
           <h3>Saved</h3>
           <List>
             {
-              JSON.parse(savedPhotos).map(photo => (
+              savedPhotos.map(photo => (
                 <ListItem component="a" target="_blank" href={photo.pageURL}>
                   <ListItemText primary={`#${photo.id}`} />
                   <ListItemIcon >

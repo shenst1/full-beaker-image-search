@@ -9,7 +9,7 @@ import Chip from '@material-ui/core/Chip';
 export default function ImageItem(props) {
 
   const { image, handleSavePhoto, savedPhotos} = props;
-  const isSaved = JSON.parse(savedPhotos).some(sImage => sImage.id === image.id)
+  const isSaved = savedPhotos.some(sImage => sImage.id === image.id)
   
   return (
     <Box style={styles.listItem}>
