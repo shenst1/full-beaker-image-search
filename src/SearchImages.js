@@ -26,9 +26,11 @@ Ways to improve the app going forward
 -Set images as center cropped background images in
 order to have a consistent height
 -Move components to a components folder
--Responsiveness on right hand sticky menu.
+-Responsiveness of right hand sticky nav menu 
 -Clean up inline styles
 -use the Material Design makeStyles helper
+-Helper text for when no images are saved
+-Make sure everything that could be componentized is
 */
 
 
