@@ -6,33 +6,33 @@ import GradeIcon from '@material-ui/icons/Grade';
 import Box from '@material-ui/core/Box';
 import Chip from '@material-ui/core/Chip';
 
-export default function ImageItem(props) {
+export default function PhotoItem(props) {
 
-  const { image, handleSavePhoto, savedPhotos} = props;
-  const isSaved = savedPhotos.some(sImage => sImage.id === image.id)
+  const { photo, handleSavePhoto, savedPhotos} = props;
+  const isSaved = savedPhotos.some(savedPhoto => savedPhoto.id === photo.id)
   
   return (
     <Box style={styles.listItem}>
       <div style={styles.imageWrapper}>
-        <img style={styles.image} src={image.largeImageURL} />
-        <Button onClick={handleSavePhoto(image)} disabled={isSaved} style={styles.imageButton}>
+        <img style={styles.image} src={photo.largeImageURL} />
+        <Button onClick={handleSavePhoto(photo)} disabled={isSaved} style={styles.imageButton}>
           {isSaved ? 'Saved' : 'Save'}
         </Button>
       </div>
       <Box p={2} style={styles.listItemMeta}>
         <Box style={styles.chips}>
           {
-            image.tags && image.tags.split(",").map(tag => (
+            photo.tags && photo.tags.split(",").map(tag => (
               <Chip style={styles.chip} size="small" label={tag} />
             ))
           }
         </Box>
         <Grid container spacing={3}>
           <Grid item>
-            {image.likes}<ThumbUpIcon style={styles.metaIcon} />
+            {photo.likes}<ThumbUpIcon style={styles.metaIcon} />
           </Grid>
           <Grid item>
-            {image.favorites}<GradeIcon style={styles.metaIcon}/>
+            {photo.favorites}<GradeIcon style={styles.metaIcon}/>
           </Grid>
         </Grid>
       </Box>

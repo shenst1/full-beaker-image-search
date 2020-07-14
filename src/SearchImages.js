@@ -1,11 +1,9 @@
 import React from 'react';
 import fetch from 'node-fetch';
-import ImageItem from './ImageItem';
-import Loading from './Loading';
+import qs from 'qs';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import List from '@material-ui/core/List';
@@ -13,12 +11,9 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
-
-import qs from 'qs';
-
-
 import categories from './categories';
-
+import ImageItem from './PhotoItem';
+import Loading from './Loading';
 
 /*
 Ways to improve the app going forward
@@ -31,15 +26,18 @@ Ways to improve the app going forward
 -Set images as center cropped background images in
 order to have a consistent height
 -Move components to a components folder
+-Responsiveness on right hand sticky menu.
+-Clean up inline styles
+-use the Material Design makeStyles helper
 */
 
 
 export default function SearchImages() {
-  const imageSource = 'https://pixabay.com/api/';
+  const pixabaySource = 'https://pixabay.com/api/';
   const pixabayApiKey = "13136421-266c28a6d61717bc2e4e6a83e";
   const [searchTerm, setSearchTerm] = React.useState();
   const [category, setCategory] = React.useState();
-  const [images, setImages] = React.useState();
+  const [photos, setPhotos] = React.useState();
   const [isLoading, setIsLoading] = React.useState(false);
   const [savedPhotos, setSavedPhotos] = React.useState(
     JSON.parse(localStorage.getItem('savedPhotos') || '[]')
@@ -49,7 +47,7 @@ export default function SearchImages() {
     localStorage.setItem('savedPhotos', JSON.stringify(savedPhotos));
   }, [savedPhotos]);
 
-  async function getImages() {
+  async function getPhotos() {
     try {
       const params = qs.stringify({
         key: pixabayApiKey,
@@ -57,10 +55,9 @@ export default function SearchImages() {
         per_page: 10,
         category
       });
-      const getURL = `${imageSource}?${params}`;
+      const getURL = `${pixabaySource}?${params}`;
       const response = await fetch(getURL);
-      const images = await response.json();
-      setImages(images);
+      setPhotos(await response.json());
       setIsLoading(false);
     } catch(e) {
       console.log(e)
@@ -69,7 +66,7 @@ export default function SearchImages() {
 
   const handleSubmit = (evt) => {
     setIsLoading(true)
-    getImages()
+    getPhotos()
   }
   
   /* 
@@ -121,9 +118,9 @@ export default function SearchImages() {
             ) : (
               <Box mt={2}>
                 {
-                  images && images.hits && images.hits.map(image => (
-                    <ImageItem 
-                      image={image} 
+                  photos && photos.hits && photos.hits.map(photo => (
+                    <ImageItem
+                      photo={photo}
                       handleSavePhoto={handleSavePhoto}
                       savedPhotos={savedPhotos}
                       />
